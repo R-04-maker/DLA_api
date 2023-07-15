@@ -12,8 +12,7 @@ import java.util.List;
 @Repository("UserRepository")
 public interface UserRepository extends JpaRepository<msuser, Integer> {
 
-    @Query(value = "SELECT * FROM msuser where email = ?1 and mbr_password = ?2",nativeQuery = true)
-    msuser login(@Param("email")String email,@Param("password") String password);
+
 
     @Query("SELECT h FROM msuser h WHERE h.nama =:nama ")
     public msuser getmahasiswaUser(@Param("nama")String nama );

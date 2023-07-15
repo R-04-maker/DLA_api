@@ -1,13 +1,15 @@
 package astratech.dla_api.controller;
 
 
+import astratech.dla_api.result.*;
+
 import astratech.dla_api.model.msuser;
-import astratech.dla_api.result.result;
 import astratech.dla_api.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,20 +19,21 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    Date currentDate = new Date();
+    Date currentDate = Calendar.getInstance().getTime();
 
 
     //save user
-    @PostMapping("/saveUser")
+    @PostMapping("/saveUsers")
     public result save(HttpServletResponse response, @RequestBody msuser mhsParam) {
-        msuser dla_msmembe = new msuser(mhsParam.getEmail(), mhsParam.getNomor(), mhsParam.getNama(), mhsParam.getAlamat(), mhsParam.getHp(), mhsParam.getPassword(), mhsParam.getId_role(), mhsParam.getId_prodi(), 1, mhsParam.getCreaby(), currentDate, mhsParam.getModiby(),currentDate);
-        boolean isSuccess = userService.save(dla_msmembe);
+
+        msuser user = new msuser(mhsParam.getEmail(), mhsParam.getNomor(), mhsParam.getNama(), mhsParam.getAlamat(), mhsParam.getHp(), mhsParam.getPassword(), mhsParam.getId_role(), mhsParam.getId_prodi(), mhsParam.getStatus(), mhsParam.getCreaby(), mhsParam.getCreadate(), mhsParam.getModiby(),mhsParam.getModidate());
+        boolean isSuccess = userService.save(user);
 
         if (isSuccess){
-            return new result(500, "Success");
+            return new result(200, "Success");
         }else{
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new result(200, "Fail");
+            return new result(500, "Fail");
         }
 
     }
@@ -47,10 +50,5 @@ public class UserController {
         return msusers;
     }
 
-//    @GetMapping("/login")
-//    public msuser login(@RequestParam("email") String email, @RequestParam("password") String password) {
-//        msuser Login = userService.getlogin(email, password);
-//        return Login;
-//
-//    }
+
 }

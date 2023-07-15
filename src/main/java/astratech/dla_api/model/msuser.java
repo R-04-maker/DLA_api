@@ -1,28 +1,30 @@
 package astratech.dla_api.model;
 
 
-import jakarta.persistence.*;
+import com.sun.istack.NotNull;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
 @Table(name = "msuser")
 public class msuser {
     @Id
-
+    @NotNull
     private String email;
     private String nomor;
     private String nama;
     private String alamat;
     private String hp;
     private String password;
-  @ManyToOne
-  @JoinColumn(name = "id_role")
-    private msrole id_role;
 
-   @ManyToOne
-   @JoinColumn(name = "id_prodi")
-    private msprodi id_prodi;
+
+    private String id_role;
+
+
+    private String id_prodi;
     private int status;
     private String creaby;
     private Date creadate;
@@ -32,7 +34,7 @@ public class msuser {
     public msuser() {
     }
 
-    public msuser(String email, String nomor, String nama, String alamat, String hp, String password, msrole id_role, msprodi id_prodi, Integer status, String creaby, Date creadate, String modiby, Date modidate) {
+    public msuser(String email, String nomor, String nama, String alamat, String hp, String password, String id_role, String id_prodi, int status, String creaby, Date creadate, String modiby, Date modidate) {
         this.email = email;
         this.nomor = nomor;
         this.nama = nama;
@@ -72,7 +74,6 @@ public class msuser {
         this.nama = nama;
     }
 
-
     public String getAlamat() {
         return alamat;
     }
@@ -97,19 +98,19 @@ public class msuser {
         this.password = password;
     }
 
-    public msrole getId_role() {
+    public String getId_role() {
         return id_role;
     }
 
-    public void setId_role(msrole id_role) {
+    public void setId_role(String id_role) {
         this.id_role = id_role;
     }
 
-    public msprodi getId_prodi() {
+    public String getId_prodi() {
         return id_prodi;
     }
 
-    public void setId_prodi(msprodi id_prodi) {
+    public void setId_prodi(String id_prodi) {
         this.id_prodi = id_prodi;
     }
 
