@@ -15,8 +15,8 @@ public class UserService {
     UserRepository userRepository;
 
 
-    public boolean save(msuser dla_msmembe) {
-        msuser result = userRepository.save(dla_msmembe);
+    public boolean save(msuser user) {
+        msuser result = userRepository.save(user);
 
         boolean isSuccess = true;
         if (result == null) {
@@ -37,10 +37,7 @@ public class UserService {
         return msusers;
     }
 
-    public msuser getlogin(String email, String password) {
 
-        msuser msmember=userRepository.login(email, password);
-        return msmember;
-    }
+
 
 }
