@@ -1,9 +1,8 @@
 package astratech.dla_api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import javax.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 public class msprodi {

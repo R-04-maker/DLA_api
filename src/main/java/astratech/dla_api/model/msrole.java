@@ -1,8 +1,7 @@
 package astratech.dla_api.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class msrole {

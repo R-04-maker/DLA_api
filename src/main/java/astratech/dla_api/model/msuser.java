@@ -3,9 +3,8 @@ package astratech.dla_api.model;
 
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -19,11 +18,7 @@ public class msuser {
     private String alamat;
     private String hp;
     private String password;
-
-
     private String id_role;
-
-
     private String id_prodi;
     private int status;
     private String creaby;

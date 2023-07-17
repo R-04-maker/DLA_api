@@ -3,11 +3,7 @@ package astratech.dla_api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -88,24 +84,24 @@ public class mskoleksi {
         this.deskripsi = deskripsi;
     }
 
-    public String getId_kategori() {
-        return id_kategori.getId_kategori();
+    public mskategori getId_kategori() {
+        return id_kategori;
     }
 
     public void setId_kategori(mskategori id_kategori) {
         this.id_kategori = id_kategori;
     }
 
-    public String getId_rak() {
-        return nama_rak.getNama();
+    public msrak getId_rak() {
+        return nama_rak;
     }
 
     public void setId_rak(msrak nama_rak) {
         this.nama_rak = nama_rak;
     }
 
-    public String getId_prodi() {
-        return id_prodi.getId_prodi();
+    public msprodi getId_prodi() {
+        return id_prodi;
     }
 
     public void setId_prodi(msprodi id_prodi) {

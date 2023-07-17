@@ -3,7 +3,10 @@ package astratech.dla_api.controller;
 import astratech.dla_api.model.mskoleksi;
 import astratech.dla_api.result.ResultKoleksi;
 import astratech.dla_api.service.KoleksiService;
-import jakarta.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -86,7 +88,7 @@ public class KoleksiController {
             String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
             Object[] element = data.get(0);
             String value = element[5].toString();
-            if(!value.equals("KOSONG") && !value.equals("IM_NoImage.jpg")){
+            if(!value.equals("KOSONG") && !value.equals("IMG_NoImage.jpg")){
                 String imagePath = baseUrl + "/assets/images/" + value;
                 element[5] = imagePath;
             }

@@ -1,8 +1,6 @@
 package astratech.dla_api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -16,8 +14,6 @@ public class trbooking {
     private Date creadate;
     private String modiby;
     private Date modidate;
-    private String nama;
-    private String nomor;
 
     public trbooking() {
     }
@@ -97,19 +93,4 @@ public class trbooking {
         this.modidate = modidate;
     }
 
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getNomor() {
-        return nomor;
-    }
-
-    public void setNomor(String nomor) {
-        this.nomor = nomor;
-    }
 }

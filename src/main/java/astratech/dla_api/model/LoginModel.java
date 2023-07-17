@@ -1,7 +1,6 @@
 package astratech.dla_api.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class LoginModel {

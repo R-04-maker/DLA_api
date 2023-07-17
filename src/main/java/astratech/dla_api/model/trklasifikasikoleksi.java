@@ -1,14 +1,11 @@
 package astratech.dla_api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 
-public class trklasifikasikoleksi {
-
+public class trklasifikasikoleksi implements Serializable{
 
     @ManyToOne
     @Id

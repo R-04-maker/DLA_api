@@ -1,9 +1,6 @@
 package astratech.dla_api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.*;
 
 import java.util.Date;
 
@@ -19,7 +16,6 @@ public class tratributkategori {
     @ManyToOne
     @JoinColumn(name = "id_atribut")
     private msatribut id_atribut;
-
 
     private String creaby;
     private Date creadate;

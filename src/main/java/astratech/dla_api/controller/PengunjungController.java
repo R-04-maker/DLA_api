@@ -3,7 +3,7 @@ package astratech.dla_api.controller;
 
 import astratech.dla_api.model.trpengunjung;
 import astratech.dla_api.service.PengunjungService;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

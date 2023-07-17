@@ -51,11 +51,11 @@ public class dla_msmembercontroller {
         return dla_msmembe;
     }
 
-    @GetMapping("/login")
+/*    @GetMapping("/login")
     public msmember login(@RequestParam("username")String username, @RequestParam("password")String password){
         msmember Login=msmemberServices.getlogin(username,password);
         return Login;
-    }
+    }*/
 
     public class PasswordEncryption {
         public static void main(String[] args) {

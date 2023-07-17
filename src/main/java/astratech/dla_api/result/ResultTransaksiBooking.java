@@ -1,6 +1,5 @@
 package astratech.dla_api.result;
 
-import astratech.dla_api.model.mskoleksi;
 import astratech.dla_api.model.trbooking;
 
 import java.util.List;
