@@ -40,7 +40,7 @@ public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
 
     @Query(value = "select id_koleksi, nama, deskripsi, id_rak, id_prodi, gambar, tautan, status, statuspinjam,\n" +
             "(select nama from mskategori where mskategori.id_kategori = mskoleksi.id_kategori) as kategori,\n" +
-            "(select id_rak + ' - ' + nama from msrak where msrak.id_rak = mskoleksi.id_rak) as rak,\n" +
+            "(select id_rak + ' - ' + nama from msrak where m msrak.id_rak = mskoleksi.id_rak) as rak,\n" +
             "(select deskripsi from msprodi where msprodi.id_prodi = mskoleksi.id_prodi) as prodi,\n" +
             "bisapinjam, penyumbang, tahun_terbit\n" +
             "from mskoleksi\n" +

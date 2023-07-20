@@ -49,7 +49,7 @@ public class KoleksiController {
             String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
             for (mskoleksi koleksi : dlaMskoleksis) {
                 if (!koleksi.getGambar().equals("KOSONG") && !koleksi.getGambar().equals("IMG_NoImage.jpg") ) {
-                    String imagePath = baseUrl + "/assets/images/" + koleksi.getGambar();
+                    String imagePath = baseUrl + "/img/" + koleksi.getGambar();
                     koleksi.setGambar(imagePath);
                 }
             }
@@ -89,7 +89,7 @@ public class KoleksiController {
             Object[] element = data.get(0);
             String value = element[5].toString();
             if(!value.equals("KOSONG") && !value.equals("IMG_NoImage.jpg")){
-                String imagePath = baseUrl + "/assets/images/" + value;
+                String imagePath = baseUrl + "/img/" + value;
                 element[5] = imagePath;
             }
             return data;
