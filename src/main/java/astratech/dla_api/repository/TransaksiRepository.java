@@ -22,7 +22,7 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
     @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Dipinjam' AND a.email = b.email", nativeQuery = true)
     List<Object[]> getBorrowedBooking();
 
-    @Query(value = "select TOP 1 a.id_transaction, a.bookingonline, a.status, b.tanggalpinjam, b.tanggalkembali, c.nomor, c.nama, c.id_prodi, d.deskripsi, c.hp" +
+    @Query(value = "select TOP 1 a.id_transaction, a.bookingonline, a.status, b.tanggalpinjam, b.tanggalkembali, c.nomor, c.nama, c.id_prodi, d.deskripsi, c.hp, a.gambar, a.gambar_sesudah" +
             " from trbooking as a, trbookingdetail as b, msuser as c, msprodi as d where a.id_transaction = b.id_transaction and a.email = c.email " +
             "and c.id_prodi = d.id_prodi and a.bookingonline = ?1", nativeQuery = true)
     Object[] getDetailBooking(int idBooking);
@@ -45,7 +45,11 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE trbooking SET gambar =:filename  WHERE bookingonline =:idBooking",nativeQuery = true)
-    void updateGambar(@Param("filename") String fileName, @Param("idBooking") int idBooking);
+    @Query(value = "UPDATE trbooking SET gambar =:filename, status =:status WHERE bookingonline =:idBooking",nativeQuery = true)
+    void updateBooking(@Param("idBooking") int idBooking, @Param("filename") String fileName, @Param("status") String status);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE trbooking SET gambar_sesudah =:filename, status =:status WHERE bookingonline =:idBooking",nativeQuery = true)
+    void updateBookingSelesai(@Param("idBooking") int idBooking, @Param("filename") String fileName, @Param("status") String status);
 }

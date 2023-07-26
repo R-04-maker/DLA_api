@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -57,15 +58,22 @@ public class TransaksiService {
             return null;
         }
     }
-    public String saveFile(MultipartFile file, int idBooking) throws IOException {
-        // Simpan file ke dalam folder proyek
-        String fileName = file.getOriginalFilename();
-        Path currentDir = Paths.get("").toAbsolutePath();
-        String filePath = currentDir.toString() + "/src/main/resources/static/img/" + fileName;
-        Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-        // Simpan nama file ke dalam database
-        transaksiRepository.updateGambar(fileName,idBooking);
-        return fileName;
+    public String updateBooking(int idBooking, String filename, String status){
+        String data = transaksiRepository.getStatusbyId(idBooking);
+        String filtered = status.replaceAll("\"","");
+        if(data != null){
+            System.out.println("if1" + status);
+            if (filtered.equals("Dipinjam")){
+                System.out.println("if2");
+                transaksiRepository.updateBooking(idBooking,filename,filtered);
+            } else {
+                System.out.println("elseif");
+                transaksiRepository.updateBookingSelesai(idBooking,filename,filtered);
+            }
+            String statusNew = transaksiRepository.getStatusbyId(idBooking);
+            return statusNew;
+        }else {
+            return null;
+        }
     }
 }

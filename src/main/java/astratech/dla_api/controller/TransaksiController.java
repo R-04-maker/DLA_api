@@ -82,6 +82,14 @@ public class TransaksiController {
                     obj[3] = imagePath;
                 }
             }
+//            System.out.println(imageA);
+//            System.out.println(data.length);
+/*            if(!data[10].equals(null) && !data[11].equals(null)){
+                String imagePath = baseUrl + "/assets/images/" + data[10].toString();
+                String imagePaths = baseUrl + "/assets/images/" + data[11].toString();
+                data[10] = imagePath;
+                data[11] = imagePaths;
+            }*/
             return new ResultObject(200,"Success",data, listdata);
         }else {
             return new ResultObject(500,"Failed",null, null);
@@ -97,16 +105,18 @@ public class TransaksiController {
         }
     }
 
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("idBooking") int idbooking){
+/*    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("idBooking") int idbooking){
         try{
             String filename = transaksiService.saveFile(file,idbooking);
             return ResponseEntity.ok("File uploaded success. File name: " + filename);
         }catch (IOException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload File");
         }
-    }
+    }*/
     @PostMapping("/updateGambar")
-    public Object updateGambar(@RequestParam("encodedImage") MultipartFile file){
+    public Object updateGambar(@RequestParam("encodedImage") MultipartFile file,
+                               @RequestParam("status") String status,
+                               @RequestParam("id") int id){
         try{
             if(file.isEmpty()){
                 return new ResponseEntity<>("Image is required", HttpStatus.BAD_REQUEST);
@@ -118,10 +128,16 @@ public class TransaksiController {
             Path path = Paths.get(uploadDir + filename);
             Files.write(path,bytes);
 
-            return new ResultString(200,"Succes","Berhasil");
+            // Update filename and status
+            System.out.println(id + filename + status);
+            String data = transaksiService.updateBooking(id,filename,status);
+            if (data != null ) {
+                return new ResultString(200,"Success",data);
+            }else {
+                return new ResultString(500,"Failed",null);
+            }
         }catch (IOException e){
             e.printStackTrace();
-//            return new ResponseEntity<>("Failed to upload image", HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResultString(200,"Failed","Gagal");
         }
     }
