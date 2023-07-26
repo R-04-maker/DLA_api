@@ -19,16 +19,19 @@ public class trbookingdetail {
     @JoinColumn(name = "id_koleksi")
     private mskoleksi id_koleksi;
 
-    private Date tanggalpinjam;
-    private Date tanggalkembali;
+    private String tanggalpinjam;
+    private String tanggalkembali;
 
     private int status;
     private String creaby;
-    private Date creadate;
+    private String creadate;
     private String modiby;
-    private Date modidate;
+    private String modidate;
 
-    public trbookingdetail(int id_transactiondetail, trbooking id_transaction, mskoleksi id_koleksi, Date tanggalpinjam, Date tanggalkembali, int status, String creaby, Date creadate, String modiby, Date modidate) {
+    public trbookingdetail() {
+    }
+
+    public trbookingdetail(int id_transactiondetail, trbooking id_transaction, mskoleksi id_koleksi, String tanggalpinjam, String tanggalkembali, int status, String creaby, String creadate, String modiby, String modidate) {
         this.id_transactiondetail = id_transactiondetail;
         this.id_transaction = id_transaction;
         this.id_koleksi = id_koleksi;
@@ -39,9 +42,6 @@ public class trbookingdetail {
         this.creadate = creadate;
         this.modiby = modiby;
         this.modidate = modidate;
-    }
-
-    public trbookingdetail() {
     }
 
     public int getId_transactiondetail() {
@@ -68,19 +68,19 @@ public class trbookingdetail {
         this.id_koleksi = id_koleksi;
     }
 
-    public Date getTanggalpinjam() {
+    public String getTanggalpinjam() {
         return tanggalpinjam;
     }
 
-    public void setTanggalpinjam(Date tanggalpinjam) {
+    public void setTanggalpinjam(String tanggalpinjam) {
         this.tanggalpinjam = tanggalpinjam;
     }
 
-    public Date getTanggalkembali() {
+    public String getTanggalkembali() {
         return tanggalkembali;
     }
 
-    public void setTanggalkembali(Date tanggalkembali) {
+    public void setTanggalkembali(String tanggalkembali) {
         this.tanggalkembali = tanggalkembali;
     }
 
@@ -100,11 +100,11 @@ public class trbookingdetail {
         this.creaby = creaby;
     }
 
-    public Date getCreadate() {
+    public String getCreadate() {
         return creadate;
     }
 
-    public void setCreadate(Date creadate) {
+    public void setCreadate(String creadate) {
         this.creadate = creadate;
     }
 
@@ -116,11 +116,11 @@ public class trbookingdetail {
         this.modiby = modiby;
     }
 
-    public Date getModidate() {
+    public String getModidate() {
         return modidate;
     }
 
-    public void setModidate(Date modidate) {
+    public void setModidate(String modidate) {
         this.modidate = modidate;
     }
 }

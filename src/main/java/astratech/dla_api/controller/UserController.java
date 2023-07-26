@@ -35,7 +35,6 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new result(500, "Fail");
         }
-
     }
 
     @GetMapping("/getUser")

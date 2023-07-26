@@ -22,14 +22,14 @@ public class msuser {
     private String id_prodi;
     private int status;
     private String creaby;
-    private Date creadate;
+    private String creadate;
     private String modiby;
-    private Date modidate;
+    private String modidate;
 
     public msuser() {
     }
 
-    public msuser(String email, String nomor, String nama, String alamat, String hp, String password, String id_role, String id_prodi, int status, String creaby, Date creadate, String modiby, Date modidate) {
+    public msuser(String email, String nomor, String nama, String alamat, String hp, String password, String id_role, String id_prodi, int status, String creaby, String creadate, String modiby, String modidate) {
         this.email = email;
         this.nomor = nomor;
         this.nama = nama;
@@ -125,11 +125,11 @@ public class msuser {
         this.creaby = creaby;
     }
 
-    public Date getCreadate() {
+    public String getCreadate() {
         return creadate;
     }
 
-    public void setCreadate(Date creadate) {
+    public void setCreadate(String creadate) {
         this.creadate = creadate;
     }
 
@@ -141,11 +141,11 @@ public class msuser {
         this.modiby = modiby;
     }
 
-    public Date getModidate() {
+    public String getModidate() {
         return modidate;
     }
 
-    public void setModidate(Date modidate) {
+    public void setModidate(String modidate) {
         this.modidate = modidate;
     }
 }
