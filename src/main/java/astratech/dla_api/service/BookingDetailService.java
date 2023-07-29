@@ -18,4 +18,9 @@ public class BookingDetailService {
         List<trbookingdetail> bookdet = bookingdetRepository.getBookdet();
         return bookdet;
     }
+
+    public boolean save(trbookingdetail bookdet) {
+        bookingdetRepository.save(bookdet);
+        return true;
+    }
 }

@@ -38,6 +38,19 @@ public class trKeranjangController {
 
     }
 
+    //deletekeranjang
+    @DeleteMapping("/deleteKeranjang/{id}")
+    public result delete(HttpServletResponse response, @PathVariable int id) {
+        boolean isSuccess = keranjangService.delete(id);
+
+        if (isSuccess){
+            return new result(200, "Success");
+        }else{
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new result(500, "Fail");
+        }
+    }
+
     @GetMapping("/getAllKeranjang/{email}")
     public  Object getDetailBooking(@PathVariable String email){
         List<trKeranjang> keranjang = keranjangService.getAllKeranjangById(email);

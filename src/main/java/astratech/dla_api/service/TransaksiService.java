@@ -22,8 +22,18 @@ public class TransaksiService {
     TransaksiRepository transaksiRepository;
 
     public List<trbooking> getBooking() {
-        List<trbooking> booking = transaksiRepository.getBoking();
+        List<trbooking> booking = transaksiRepository.getidBooking();
         return booking;
+    }
+
+    public boolean save(trbooking booking) {
+        transaksiRepository.save(booking);
+        return true;
+    }
+
+    public boolean delete(int id) {
+        transaksiRepository.deleteById(id);
+        return true;
     }
 
     public List<Object[]> getUnconfirmedBooking() {

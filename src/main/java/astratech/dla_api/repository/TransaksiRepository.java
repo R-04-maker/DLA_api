@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository("TransaksiRepository")
 public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
-    @Query("SELECT h FROM trbooking h")
-    public List<trbooking> getBoking();
+    @Query(value = "SELECT TOP 1 * FROM trbooking ORDER BY id_transaction DESC ",nativeQuery = true)
+    public List<trbooking> getidBooking();
 
     @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Pengajuan' AND a.email = b.email", nativeQuery = true)
     List<Object[]> getUnconfirmedBooking();

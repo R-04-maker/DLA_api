@@ -11,14 +11,14 @@ public class trbooking {
     private int bookingonline;
     private String status;
     private String creaby;
-    private Date creadate;
+    private String creadate;
     private String modiby;
-    private Date modidate;
+    private String modidate;
 
     public trbooking() {
     }
 
-    public trbooking(String id_transaction, String email, int bookingonline, String status, String creaby, Date creadate, String modiby, Date modidate) {
+    public trbooking(String id_transaction, String email, int bookingonline, String status, String creaby, String creadate, String modiby, String modidate) {
         this.id_transaction = id_transaction;
         this.email = email;
         this.bookingonline = bookingonline;
@@ -69,11 +69,11 @@ public class trbooking {
         this.creaby = creaby;
     }
 
-    public Date getCreadate() {
+    public String getCreadate() {
         return creadate;
     }
 
-    public void setCreadate(Date creadate) {
+    public void setCreadate(String creadate) {
         this.creadate = creadate;
     }
 
@@ -85,12 +85,11 @@ public class trbooking {
         this.modiby = modiby;
     }
 
-    public Date getModidate() {
+    public String getModidate() {
         return modidate;
     }
 
-    public void setModidate(Date modidate) {
+    public void setModidate(String modidate) {
         this.modidate = modidate;
     }
-
 }
