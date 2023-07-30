@@ -1,6 +1,7 @@
 package astratech.dla_api.repository;
 
 import astratech.dla_api.model.mskoleksi;
+import astratech.dla_api.model.tratributkoleksi;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,21 +11,20 @@ import java.util.List;
 
 @Repository("dla_mskoleksiRepository")
 public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
-    @Query(value = "select a.*, b.deskripsi as pengarang from mskoleksi as a, tratributkoleksi as b, msatribut as c where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1", nativeQuery = true)
+/*    @Query(value = "select a.*, b.deskripsi as pengarang from mskoleksi as a, tratributkoleksi as b, msatribut as c where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1", nativeQuery = true)
+    List<mskoleksi> findAllByBrg_status();    */
+    @Query(value = "select * from mskoleksi where status = 1", nativeQuery = true)
     List<mskoleksi> findAllByBrg_status();
 
     // Newest Collection
 //    @Query("select a from mskoleksi a where  a.status=1 ORDER BY a.creadate DESC LIMIT 10")
-    @Query(value = "SELECT TOP 10 a.*,b.deskripsi as pengarang FROM mskoleksi a, tratributkoleksi as b, msatribut as c " +
-            "where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1 " +
-            "and a.id_koleksi IN (SELECT MIN(id_koleksi) FROM mskoleksi GROUP BY nama) ORDER BY a.creadate DESC\n", nativeQuery = true)
+    @Query(value = "select TOP 10 * from mskoleksi where status = 1 order by creadate DESC", nativeQuery = true)
     List<mskoleksi> getNewestbyCreadate();
+
 
     // Newest Released
 //    @Query("select a from mskoleksi a where  a.status=1 ORDER BY a.tahun_terbit DESC LIMIT 10")
-    @Query(value = "SELECT TOP 10 a.*,b.deskripsi as pengarang FROM mskoleksi as a, tratributkoleksi as b, msatribut as c " +
-            "where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1 " +
-            "and  a.id_koleksi IN (SELECT MIN(id_koleksi) FROM mskoleksi GROUP BY nama) ORDER BY a.tahun_terbit DESC", nativeQuery = true)
+    @Query(value = "SELECT TOP 10 * from mskoleksi where status = 1 ORDER BY tahun_terbit DESC", nativeQuery = true)
     List<mskoleksi> getNewestbyTahunterbit();
 
     @Query(value = "SELECT TOP 10 k.id_koleksi, b.nama, b.deskripsi, b.id_kategori, b.id_rak, b.id_prodi, b.gambar, b.tautan, b.status, b.statuspinjam, b.bisapinjam, b.creaby, b.creadate, b.modiby, b.modidate, b.tahun_terbit, b.penyumbang\n" +

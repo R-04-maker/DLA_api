@@ -2,6 +2,7 @@ package astratech.dla_api.service;
 
 
 import astratech.dla_api.model.mskoleksi;
+import astratech.dla_api.model.tratributkoleksi;
 import astratech.dla_api.repository.KoleksiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

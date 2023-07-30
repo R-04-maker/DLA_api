@@ -4,7 +4,6 @@ import astratech.dla_api.model.*;
 import astratech.dla_api.result.ResultKeranjang;
 import astratech.dla_api.result.ResultObject;
 import astratech.dla_api.result.result;
-import astratech.dla_api.result.resultLogin;
 import astratech.dla_api.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class KeranjangController {
     @PostMapping("/saveKeranjang")
     public result save(HttpServletResponse response, @RequestBody trKeranjang keranjang) {
 
-        trKeranjang keranjang1=new trKeranjang(keranjang.getId_keranjang(),keranjang.getEmail(), keranjang.getId_koleksi());
+        trKeranjang keranjang1 = new trKeranjang(keranjang.getId_keranjang(),keranjang.getEmail(), keranjang.getId_koleksi());
         boolean isSuccess = keranjangService.save(keranjang1);
 
         if (isSuccess){

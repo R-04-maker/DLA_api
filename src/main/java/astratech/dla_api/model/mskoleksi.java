@@ -2,11 +2,12 @@ package astratech.dla_api.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "mskoleksi")
 public class mskoleksi {
     @Id
     private String id_koleksi;
@@ -36,11 +37,12 @@ public class mskoleksi {
     private String tahun_terbit;
     private String penyumbang;
     private String pengarang;
+    private String penerbit;
 
     public mskoleksi() {
     }
 
-    public mskoleksi(String id_koleksi, String nama, String deskripsi, mskategori id_kategori, msrak id_rak, msprodi id_prodi, String gambar, String tautan, int status, int statuspinjam, int bisapinjam, String creaby, Date creadate, String modiby, Date modidate, String tahun_terbit, String penyumbang, String pengarang) {
+    public mskoleksi(String id_koleksi, String nama, String deskripsi, mskategori id_kategori, msrak id_rak, msprodi id_prodi, String gambar, String tautan, int status, int statuspinjam, int bisapinjam, String creaby, Date creadate, String modiby, Date modidate, String tahun_terbit, String penyumbang, String pengarang, String penerbit) {
         this.id_koleksi = id_koleksi;
         this.nama = nama;
         this.deskripsi = deskripsi;
@@ -59,6 +61,7 @@ public class mskoleksi {
         this.tahun_terbit = tahun_terbit;
         this.penyumbang = penyumbang;
         this.pengarang = pengarang;
+        this.penerbit = penerbit;
     }
 
     public String getId_koleksi() {
@@ -203,5 +206,13 @@ public class mskoleksi {
 
     public void setPengarang(String pengarang) {
         this.pengarang = pengarang;
+    }
+
+    public String getPenerbit() {
+        return penerbit;
+    }
+
+    public void setPenerbit(String penerbit) {
+        this.penerbit = penerbit;
     }
 }

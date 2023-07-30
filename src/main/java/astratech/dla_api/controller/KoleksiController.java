@@ -1,7 +1,9 @@
 package astratech.dla_api.controller;
 
 import astratech.dla_api.model.mskoleksi;
+import astratech.dla_api.model.tratributkoleksi;
 import astratech.dla_api.result.ResultKoleksi;
+import astratech.dla_api.result.ResultObject;
 import astratech.dla_api.service.KoleksiService;
 
 import javax.servlet.http.HttpServletRequest;

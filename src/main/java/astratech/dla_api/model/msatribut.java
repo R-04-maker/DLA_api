@@ -6,7 +6,6 @@ import java.util.Date;
 @Entity
 public class msatribut {
     @Id
-
     private String id_atribut;
 
     private String nama;
