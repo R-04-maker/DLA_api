@@ -30,11 +30,35 @@ public class KoleksiController {
             return new ResultKoleksi(500,"Failed",null);
         }
     }
-
+    @GetMapping("/getBukuByNama")
+    public Object getBukuByNama() {
+        List<mskoleksi> dlaMskoleksis = mskoleksiServie.getAll();
+        if (dlaMskoleksis != null) {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
+            for (mskoleksi koleksi : dlaMskoleksis) {
+                if (!koleksi.getGambar().equals("KOSONG") && !koleksi.getGambar().equals("IMG_NoImage.jpg") ) {
+                    String imagePath = baseUrl + "/img/koleksi/" + koleksi.getGambar();
+                    koleksi.setGambar(imagePath);
+                }
+            }
+            return new ResultKoleksi(200, "Success", dlaMskoleksis);
+        } else {
+            return new ResultKoleksi(500, "Failed", null);
+        }
+    }
     @GetMapping("/getNewestCollection")
     public Object getNewestCollection(){
         List<mskoleksi> dlaMskoleksis = mskoleksiServie.getNewestbyCreadate();
         if(dlaMskoleksis != null){
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
+            for (mskoleksi koleksi : dlaMskoleksis) {
+                if (!koleksi.getGambar().equals("KOSONG") && !koleksi.getGambar().equals("IMG_NoImage.jpg") ) {
+                    String imagePath = baseUrl + "/img/koleksi/" + koleksi.getGambar();
+                    koleksi.setGambar(imagePath);
+                }
+            }
             return new ResultKoleksi(200, "Success", dlaMskoleksis);
         }else {
             return new ResultKoleksi(500,"Failed",null);
@@ -49,7 +73,7 @@ public class KoleksiController {
             String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
             for (mskoleksi koleksi : dlaMskoleksis) {
                 if (!koleksi.getGambar().equals("KOSONG") && !koleksi.getGambar().equals("IMG_NoImage.jpg") ) {
-                    String imagePath = baseUrl + "/img/" + koleksi.getGambar();
+                    String imagePath = baseUrl + "/img/koleksi/" + koleksi.getGambar();
                     koleksi.setGambar(imagePath);
                 }
             }
@@ -59,24 +83,14 @@ public class KoleksiController {
         }
     }
 
-    @GetMapping("/getPopularBook")
-    public Object getPopular(){
-        List<mskoleksi> dlaMsKoleksis = mskoleksiServie.getPopular();
-        if(dlaMsKoleksis != null){
-            if(dlaMsKoleksis.size() < 10){
-                List<mskoleksi> mskoleksis = mskoleksiServie.getAll();
-                return new ResultKoleksi(200, "Success get All data", mskoleksis);
-            }else {
-                return new ResultKoleksi(200, "Success get Popular", dlaMsKoleksis);
-            }
-        }else {
-            return new ResultKoleksi(500,"Failed",null);
-        }
-    }
-
     @GetMapping("/getDataDashboard")
     public List<Object[]> getDataDashboard(){
         List<Object[]> data = mskoleksiServie.getDataDashboard();
+        return data;
+    }
+    @GetMapping("/getDataDashboardMember/{email}")
+    public List<Object[]> getDataDashboardMember(@PathVariable String email){
+        List<Object[]> data = mskoleksiServie.getDataDashboardMember(email);
         return data;
     }
     @GetMapping("/getDetailKoleksi/{id}")
@@ -89,7 +103,7 @@ public class KoleksiController {
             Object[] element = data.get(0);
             String value = element[5].toString();
             if(!value.equals("KOSONG") && !value.equals("IMG_NoImage.jpg")){
-                String imagePath = baseUrl + "/img/" + value;
+                String imagePath = baseUrl + "/img/foto_peminjaman/" + value;
                 element[5] = imagePath;
             }
             return data;

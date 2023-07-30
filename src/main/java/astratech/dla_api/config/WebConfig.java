@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    @Value("src/main/resources/static/img/")
+    @Value("src/main/resources/static/img/foto_peminjaman/")
     private String uploadDir;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

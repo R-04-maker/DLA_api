@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("KeranjangRepository")
-public interface trKeranjangRepository extends JpaRepository<trKeranjang, Integer> {
+public interface KeranjangRepository extends JpaRepository<trKeranjang, Integer> {
 
     @Query(value = "select * from trKeranjangPeminjaman where email=?1",nativeQuery = true)
     List<trKeranjang> getAllKeranjangById(String email);

@@ -32,6 +32,9 @@ public class KoleksiService {
     public List<Object[]> getDataDashboard(){
         return mskoleksiRepository.getDataDashboard();
     }
+    public List<Object[]> getDataDashboardMember(String email){
+        return mskoleksiRepository.getDataDashboardMember(email);
+    }
     public List<Object[]> getDetailKoleksi(int id){
         return mskoleksiRepository.getDetailKoleksi(id);
     }

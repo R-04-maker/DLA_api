@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class trKeranjangService {
+public class KeranjangService {
     @Autowired
-    trKeranjangRepository keranjangRepository;
+    KeranjangRepository keranjangRepository;
 
 
     public boolean save(trKeranjang keranjang) {

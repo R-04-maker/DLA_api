@@ -19,8 +19,7 @@ public class mskoleksi {
     @ManyToOne
     @JoinColumn(name = "id_rak")
     @JsonIgnoreProperties("koleksi")
-//    @JsonProperty("id_rak")
-    private msrak nama_rak;
+    private msrak id_rak;
     @ManyToOne
     @JoinColumn(name = "id_prodi")
     @JsonIgnoreProperties("koleksi")
@@ -36,16 +35,17 @@ public class mskoleksi {
     private Date modidate;
     private String tahun_terbit;
     private String penyumbang;
+    private String pengarang;
 
     public mskoleksi() {
     }
 
-    public mskoleksi(String id_koleksi, String nama, String deskripsi, mskategori id_kategori, msrak nama_rak, msprodi id_prodi, String gambar, String tautan, int status, int statuspinjam, int bisapinjam, String creaby, Date creadate, String modiby, Date modidate, String tahun_terbit, String penyumbang) {
+    public mskoleksi(String id_koleksi, String nama, String deskripsi, mskategori id_kategori, msrak id_rak, msprodi id_prodi, String gambar, String tautan, int status, int statuspinjam, int bisapinjam, String creaby, Date creadate, String modiby, Date modidate, String tahun_terbit, String penyumbang, String pengarang) {
         this.id_koleksi = id_koleksi;
         this.nama = nama;
         this.deskripsi = deskripsi;
         this.id_kategori = id_kategori;
-        this.nama_rak = nama_rak;
+        this.id_rak = id_rak;
         this.id_prodi = id_prodi;
         this.gambar = gambar;
         this.tautan = tautan;
@@ -58,6 +58,7 @@ public class mskoleksi {
         this.modidate = modidate;
         this.tahun_terbit = tahun_terbit;
         this.penyumbang = penyumbang;
+        this.pengarang = pengarang;
     }
 
     public String getId_koleksi() {
@@ -93,11 +94,11 @@ public class mskoleksi {
     }
 
     public msrak getId_rak() {
-        return nama_rak;
+        return id_rak;
     }
 
-    public void setId_rak(msrak nama_rak) {
-        this.nama_rak = nama_rak;
+    public void setId_rak(msrak id_rak) {
+        this.id_rak = id_rak;
     }
 
     public msprodi getId_prodi() {
@@ -194,5 +195,13 @@ public class mskoleksi {
 
     public void setPenyumbang(String penyumbang) {
         this.penyumbang = penyumbang;
+    }
+
+    public String getPengarang() {
+        return pengarang;
+    }
+
+    public void setPengarang(String pengarang) {
+        this.pengarang = pengarang;
     }
 }

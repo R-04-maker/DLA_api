@@ -1,7 +1,5 @@
 package astratech.dla_api.model;
 
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 
 @Entity

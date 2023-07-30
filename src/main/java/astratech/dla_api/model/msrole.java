@@ -4,6 +4,7 @@ package astratech.dla_api.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "msrole")
 public class msrole {
 
     @Id

@@ -1,12 +1,12 @@
 package astratech.dla_api.result;
 
-public class resultLogin<T> {
+public class ResultLogin<T> {
 
     private Integer status;
     private String result;
     private T data;
 
-    public resultLogin(Integer status, String result, T data) {
+    public ResultLogin(Integer status, String result, T data) {
         this.status = status;
         this.result = result;
         this.data = data;

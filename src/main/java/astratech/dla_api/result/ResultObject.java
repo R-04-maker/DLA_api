@@ -7,23 +7,23 @@ import java.util.List;
 public class ResultObject {
     private int result;
     private String message;
-    private Object[] data;
+    private List<Object[]> data;
     private List<Object[]> listdata;
 
     public ResultObject() {
     }
 
-    public ResultObject(int result, String message, Object[] data) {
+    public ResultObject(int result, String message, List<Object[]> data) {
         this.result = result;
         this.message = message;
         this.data = data;
     }
-    public ResultObject(int result, String message, List<Object[]> listdata) {
+/*    public ResultObject(int result, String message, List<Object[]> listdata) {
         this.result = result;
         this.message = message;
         this.listdata = listdata;
-    }
-    public ResultObject(int result, String message, Object[] data,List<Object[]> listdata) {
+    }*/
+    public ResultObject(int result, String message, List<Object[]> data,List<Object[]> listdata) {
         this.result = result;
         this.message = message;
         this.data = data;
@@ -45,11 +45,11 @@ public class ResultObject {
         this.message = message;
     }
 
-    public Object[] getData() {
+    public List<Object[]> getData() {
         return data;
     }
 
-    public void setData(Object[] data) {
+    public void setData(List<Object[]> data) {
         this.data = data;
     }
 

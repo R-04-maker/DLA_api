@@ -21,11 +21,15 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
     List<Object[]> getConfirmedBooking();
     @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Dipinjam' AND a.email = b.email", nativeQuery = true)
     List<Object[]> getBorrowedBooking();
+    @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Selesai' AND a.email = b.email", nativeQuery = true)
+    List<Object[]> getFinishedBooking();
+    @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.email = b.email", nativeQuery = true)
+    List<Object[]> getAllBooking();
 
     @Query(value = "select TOP 1 a.id_transaction, a.bookingonline, a.status, b.tanggalpinjam, b.tanggalkembali, c.nomor, c.nama, c.id_prodi, d.deskripsi, c.hp, a.gambar, a.gambar_sesudah" +
             " from trbooking as a, trbookingdetail as b, msuser as c, msprodi as d where a.id_transaction = b.id_transaction and a.email = c.email " +
             "and c.id_prodi = d.id_prodi and a.bookingonline = ?1", nativeQuery = true)
-    Object[] getDetailBooking(int idBooking);
+    List<Object[]> getDetailBooking(int idBooking);
 
     @Query(value = "SELECT c.bookingonline, a.id_koleksi, b.nama, b.gambar," +
             "(SELECT nama FROM mskategori WHERE mskategori.id_kategori = b.id_kategori) AS kategori" +

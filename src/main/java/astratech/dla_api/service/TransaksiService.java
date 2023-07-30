@@ -38,9 +38,17 @@ public class TransaksiService {
         List<Object[]> booking = transaksiRepository.getBorrowedBooking();
         return booking;
     }
+    public List<Object[]> getFinishedBooking() {
+        List<Object[]> booking = transaksiRepository.getFinishedBooking();
+        return booking;
+    }
+    public List<Object[]> getAllBooking() {
+        List<Object[]> booking = transaksiRepository.getAllBooking();
+        return booking;
+    }
 
-    public Object[] getDetailBooking(int idBooking) {
-        Object[] booking = transaksiRepository.getDetailBooking(idBooking);
+    public List<Object[]> getDetailBooking(int idBooking) {
+        List<Object[]> booking = transaksiRepository.getDetailBooking(idBooking);
         return booking;
     }
 

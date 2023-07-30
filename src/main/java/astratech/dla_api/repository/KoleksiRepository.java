@@ -10,19 +10,21 @@ import java.util.List;
 
 @Repository("dla_mskoleksiRepository")
 public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
-    @Query("select a from mskoleksi a where  a.status=1")
+    @Query(value = "select a.*, b.deskripsi as pengarang from mskoleksi as a, tratributkoleksi as b, msatribut as c where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1", nativeQuery = true)
     List<mskoleksi> findAllByBrg_status();
 
     // Newest Collection
 //    @Query("select a from mskoleksi a where  a.status=1 ORDER BY a.creadate DESC LIMIT 10")
-    @Query(value = "SELECT TOP 10 * FROM mskoleksi WHERE id_koleksi IN (" +
-            "SELECT MIN(id_koleksi) FROM mskoleksi GROUP BY nama) ORDER BY creadate DESC", nativeQuery = true)
+    @Query(value = "SELECT TOP 10 a.*,b.deskripsi as pengarang FROM mskoleksi a, tratributkoleksi as b, msatribut as c " +
+            "where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1 " +
+            "and a.id_koleksi IN (SELECT MIN(id_koleksi) FROM mskoleksi GROUP BY nama) ORDER BY a.creadate DESC\n", nativeQuery = true)
     List<mskoleksi> getNewestbyCreadate();
 
     // Newest Released
 //    @Query("select a from mskoleksi a where  a.status=1 ORDER BY a.tahun_terbit DESC LIMIT 10")
-    @Query(value = "SELECT TOP 10 * FROM mskoleksi WHERE id_koleksi IN (" +
-            "SELECT MIN(id_koleksi) FROM mskoleksi GROUP BY nama) ORDER BY tahun_terbit DESC", nativeQuery = true)
+    @Query(value = "SELECT TOP 10 a.*,b.deskripsi as pengarang FROM mskoleksi as a, tratributkoleksi as b, msatribut as c " +
+            "where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1 " +
+            "and  a.id_koleksi IN (SELECT MIN(id_koleksi) FROM mskoleksi GROUP BY nama) ORDER BY a.tahun_terbit DESC", nativeQuery = true)
     List<mskoleksi> getNewestbyTahunterbit();
 
     @Query(value = "SELECT TOP 10 k.id_koleksi, b.nama, b.deskripsi, b.id_kategori, b.id_rak, b.id_prodi, b.gambar, b.tautan, b.status, b.statuspinjam, b.bisapinjam, b.creaby, b.creadate, b.modiby, b.modidate, b.tahun_terbit, b.penyumbang\n" +
@@ -37,10 +39,15 @@ public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
             "    (SELECT COUNT(*) FROM trpengunjung WHERE DATEPART(DAY,creadate) = DATEPART(MONTH, GETDATE())) AS jumlah_pengunjung,\n" +
             "    (SELECT COUNT(*) FROM trbooking WHERE MONTH(creadate) = MONTH(GETDATE())) AS jumlah_history;",nativeQuery = true)
     List<Object[]> getDataDashboard();
+    @Query(value = "SELECT \n" +
+            "    (SELECT COUNT(*) FROM trbooking WHERE email = ?1 AND status = 'Selesai') AS count_booking_selesai,\n" +
+            "    (SELECT COUNT(id_koleksi) FROM trbookingdetail a, trbooking as b WHERE a.id_transaction = b.id_transaction AND b.status = 'Dipinjam' AND b.email = ?1) AS count_buku_dipinjam,\n" +
+            "    (SELECT COUNT(*) FROM trKeranjangPeminjaman WHERE email = ?1) AS count_keranjang",nativeQuery = true)
+    List<Object[]> getDataDashboardMember(String email);
 
     @Query(value = "select id_koleksi, nama, deskripsi, id_rak, id_prodi, gambar, tautan, status, statuspinjam,\n" +
             "(select nama from mskategori where mskategori.id_kategori = mskoleksi.id_kategori) as kategori,\n" +
-            "(select id_rak + ' - ' + nama from msrak where m msrak.id_rak = mskoleksi.id_rak) as rak,\n" +
+            "(select id_rak + ' - ' + nama from msrak where msrak.id_rak = mskoleksi.id_rak) as rak,\n" +
             "(select deskripsi from msprodi where msprodi.id_prodi = mskoleksi.id_prodi) as prodi,\n" +
             "bisapinjam, penyumbang, tahun_terbit\n" +
             "from mskoleksi\n" +

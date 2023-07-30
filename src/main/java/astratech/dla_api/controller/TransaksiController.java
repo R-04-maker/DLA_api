@@ -22,9 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +38,7 @@ public class TransaksiController {
     @Autowired
     TransaksiService transaksiService;
 
-    @Value("src/main/resources/static/img/")
+    @Value("src/main/resources/static/img/foto_peminjaman/")
     private String uploadDir;
 
     @GetMapping("/getBooking")
@@ -68,28 +73,49 @@ public class TransaksiController {
             return new ResultTransaksiBooking(500,"Failed",null);
         }
     }
+    @GetMapping("/getFinishedBooking")
+    public Object getFinishedBooking(HttpServletResponse response){
+        List<Object[]> booking = transaksiService.getFinishedBooking();
+        if(booking != null){
+            return new ResultObject(200, "Success", booking);
+        }else {
+            return new ResultTransaksiBooking(500,"Failed",null);
+        }
+    }
+
+    @GetMapping("/getAllBooking")
+    public Object getAllBooking(HttpServletResponse response){
+        List<Object[]> booking = transaksiService.getAllBooking();
+        if(booking != null){
+            return new ResultObject(200, "Success", booking);
+        }else {
+            return new ResultTransaksiBooking(500,"Failed",null);
+        }
+    }
 
     @GetMapping("/getDetailBooking/{id}")
     public Object getDetailBooking(@PathVariable int id){
-        Object[] data = transaksiService.getDetailBooking(id);
+        List<Object[]> data = transaksiService.getDetailBooking(id);
         List<Object[]> listdata = transaksiService.getBukuDetailBooking(id);
-        if (data != null && data.length > 0) {
+        if (data != null && data.size() > 0) {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
             for(Object[] obj : listdata){
                 if(!obj[3].toString().equals("KOSONG") && !obj[3].toString().equals("IMG_NoImage.jpg")){
-                    String imagePath = baseUrl + "/assets/images/" + obj[3].toString();
+                    String imagePath = baseUrl + "/img/koleksi/" + obj[3].toString();
                     obj[3] = imagePath;
                 }
             }
-//            System.out.println(imageA);
-//            System.out.println(data.length);
-/*            if(!data[10].equals(null) && !data[11].equals(null)){
-                String imagePath = baseUrl + "/assets/images/" + data[10].toString();
-                String imagePaths = baseUrl + "/assets/images/" + data[11].toString();
-                data[10] = imagePath;
-                data[11] = imagePaths;
-            }*/
+            Object[] a = data.get(0);
+            System.out.println(a[10].toString());
+            if(!a[10].toString().equals(null)){
+                String imagePath = baseUrl + "/img/foto_peminjaman/" + a[10].toString();
+                a[10] = imagePath;
+            }
+            if(!a[11].toString().equals(null)){
+                String imagePath = baseUrl + "/img/foto_peminjaman/" + a[11].toString();
+                a[11] = imagePath;
+            }
             return new ResultObject(200,"Success",data, listdata);
         }else {
             return new ResultObject(500,"Failed",null, null);
@@ -104,70 +130,62 @@ public class TransaksiController {
             return new ResultString(500,"Failed",null);
         }
     }
-
-/*    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("idBooking") int idbooking){
-        try{
-            String filename = transaksiService.saveFile(file,idbooking);
-            return ResponseEntity.ok("File uploaded success. File name: " + filename);
-        }catch (IOException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload File");
-        }
-    }*/
     @PostMapping("/updateGambar")
     public Object updateGambar(@RequestParam("encodedImage") MultipartFile file,
                                @RequestParam("status") String status,
-                               @RequestParam("id") int id){
-        try{
-            if(file.isEmpty()){
-                return new ResponseEntity<>("Image is required", HttpStatus.BAD_REQUEST);
-            }
+                               @RequestParam("id") int id) throws IOException{
+        if(file.isEmpty()){
+            return new ResultString(500,"Failed",null);
+        }
 
-            // Save file to the specified directory
-            byte[] bytes = file.getBytes();
-            String filename = file.getOriginalFilename();
-            Path path = Paths.get(uploadDir + filename);
-            Files.write(path,bytes);
+        // Save file to the specified directory
+//            byte[] bytes = file.getBytes();
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get(uploadDir + filename);
+        try(InputStream sourcePath = file.getInputStream()){
+            Files.copy(sourcePath,path, StandardCopyOption.REPLACE_EXISTING);
+        }
 
-            // Update filename and status
-            System.out.println(id + filename + status);
-            String data = transaksiService.updateBooking(id,filename,status);
-            if (data != null ) {
-                return new ResultString(200,"Success",data);
-            }else {
-                return new ResultString(500,"Failed",null);
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-            return new ResultString(200,"Failed","Gagal");
+        // Update filename and status
+        System.out.println(id + filename + status);
+        String data = transaksiService.updateBooking(id,filename,status);
+        if (data != null ) {
+            return new ResultString(200,"Success",data);
+        }else {
+            return new ResultString(500,"Failed",null);
         }
     }
+    @PostMapping("/saveBanner")
+    public Object updateGambar(@RequestParam("encodedImage") MultipartFile file) throws IOException{
+        if(file.isEmpty()){
+            return new ResultString(500,"Failed",null);
+        }
 
-    @GetMapping("/image/{filename:.+}")
-    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        try {
-            Path file = Paths.get(uploadDir + filename);
-            Resource resource = new UrlResource(file.toUri());
+        // Save file to the specified directory
+//            byte[] bytes = file.getBytes();
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get("src/main/resources/static/img/banner/" + filename);
+        try(InputStream sourcePath = file.getInputStream()){
+            Files.copy(sourcePath,path, StandardCopyOption.REPLACE_EXISTING);
+        }
+        if (file.isEmpty() ) {
+            return new ResultString(500, "Failed: File is empty", null);
+        }else {
+            return new ResultString(500,"sukses","berhasil");
+        }
+    }
+    @GetMapping("/image/{imageName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws MalformedURLException {
+        // Ganti "uploadDir" dengan direktori tempat gambar Anda disimpan pada server
+        String uploadDir = "src/main/resources/static/img/banner/";
 
-            if (resource.exists()) {
-                // Membangun URL lengkap dari sumber daya (gambar) menggunakan ServletUriComponentsBuilder
-                String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/image/")
-                        .path(filename)
-                        .toUriString();
+        // Dapatkan path lengkap untuk gambar
+        Path imagePath = Paths.get(uploadDir, imageName);
+        Resource imageResource = new UrlResource(imagePath.toUri());
 
-                // Mengatur header untuk memberi tahu klien tentang lokasi gambar
-                HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.LOCATION, fileUrl);
-
-                return ResponseEntity
-                        .ok()
-                        .headers(headers)
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (imageResource.exists() && imageResource.isReadable()) {
+            return ResponseEntity.ok().body(imageResource);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
