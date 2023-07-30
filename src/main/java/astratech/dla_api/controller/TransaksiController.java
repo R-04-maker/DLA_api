@@ -46,6 +46,32 @@ public class TransaksiController {
         List<trbooking> booking = transaksiService.getBooking();
         return booking;
     }
+
+    //deletebooking
+    @DeleteMapping("/deleteBooking/{id}")
+    public result delete(HttpServletResponse response, @PathVariable int id) {
+        boolean isSuccess = transaksiService.delete(id);
+
+        if (isSuccess){
+            return new result(200, "Success");
+        }else{
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new result(500, "Fail");
+        }
+    }
+
+    @PostMapping("/saveBooking")
+    public result save(HttpServletResponse response, @RequestBody trbooking booking) {
+        trbooking booking1=new trbooking(booking.getId_transaction(),booking.getEmail(),booking.getBookingonline(),booking.getStatus(),booking.getCreaby(),booking.getCreadate(),booking.getModiby(),booking.getModidate());
+        boolean isSuccess = transaksiService.save(booking1);
+        if (isSuccess){
+            return new result(200, "Success");
+        }else{
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new result(500, "Fail");
+        }
+    }
+
     @GetMapping("/getUnconfirmedBooking")
     public Object getUnconfirmedBooking(HttpServletResponse response){
         List<Object[]> booking = transaksiService.getUnconfirmedBooking();

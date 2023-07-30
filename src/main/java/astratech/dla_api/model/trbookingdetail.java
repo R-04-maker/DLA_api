@@ -9,6 +9,7 @@ import java.util.Date;
 public class trbookingdetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_transactiondetail;
 
     @ManyToOne

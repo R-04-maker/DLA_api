@@ -23,6 +23,11 @@ public class KeranjangService {
         return isSuccess;
     }
 
+    public boolean delete(int id) {
+        keranjangRepository.deleteById(id);
+        return true;
+    }
+
     public List<trKeranjang> getAllKeranjangById(String email) {
         List<trKeranjang> keranjang = keranjangRepository.getAllKeranjangById(email);
         return keranjang;
