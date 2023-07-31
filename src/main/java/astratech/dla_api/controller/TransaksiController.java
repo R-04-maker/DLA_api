@@ -1,6 +1,7 @@
 package astratech.dla_api.controller;
 
 import astratech.dla_api.model.trbooking;
+import astratech.dla_api.model.trbookingdetail;
 import astratech.dla_api.result.ResultObject;
 import astratech.dla_api.result.ResultString;
 import astratech.dla_api.result.ResultTransaksiBooking;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,15 +30,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 public class TransaksiController {
     @Autowired
     TransaksiService transaksiService;
+    @Autowired
+    ResourceLoader resourceLoader;
 
     @Value("src/main/resources/static/img/foto_peminjaman/")
     private String uploadDir;
@@ -62,10 +65,18 @@ public class TransaksiController {
 
     @PostMapping("/saveBooking")
     public result save(HttpServletResponse response, @RequestBody trbooking booking) {
-        trbooking booking1=new trbooking(booking.getId_transaction(),booking.getEmail(),booking.getBookingonline(),booking.getStatus(),booking.getCreaby(),booking.getCreadate(),booking.getModiby(),booking.getModidate());
-        boolean isSuccess = transaksiService.save(booking1);
-        if (isSuccess){
-            return new result(200, "Success");
+        System.out.println(booking.getBookingonline());
+        Date currentDate = new Date();
+
+        // Buat objek SimpleDateFormat untuk format datetime yang diinginkan
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = dateFormat.format(currentDate);
+        trbooking booking1 = new trbooking(booking.getId_transaction(),booking.getEmail(),booking.getBookingonline(),booking.getStatus(),booking.getCreaby(),formattedDateTime,booking.getModiby(),formattedDateTime,booking.getGambar(), booking.getGambar_sesudah());
+        trbooking savedBooking = transaksiService.save(booking1);
+        int idTransaction = savedBooking.getId_transaction();
+        System.out.println(idTransaction);
+        if (idTransaction > 0){
+            return new result(idTransaction, "Success");
         }else{
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new result(500, "Fail");
@@ -163,11 +174,12 @@ public class TransaksiController {
         if(file.isEmpty()){
             return new ResultString(500,"Failed",null);
         }
+        Resource resource = resourceLoader.getResource("classpath:static/img/foto_peminjaman");
+        String uploadDirectory = resource.getFile().getAbsolutePath().replace("\\", "/");
 
         // Save file to the specified directory
-//            byte[] bytes = file.getBytes();
         String filename = file.getOriginalFilename();
-        Path path = Paths.get(uploadDir + filename);
+        Path path = Paths.get(uploadDirectory +"/"+ filename);
         try(InputStream sourcePath = file.getInputStream()){
             Files.copy(sourcePath,path, StandardCopyOption.REPLACE_EXISTING);
         }

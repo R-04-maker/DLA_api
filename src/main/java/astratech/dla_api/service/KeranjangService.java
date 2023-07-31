@@ -32,4 +32,14 @@ public class KeranjangService {
         List<trKeranjang> keranjang = keranjangRepository.getAllKeranjangById(email);
         return keranjang;
     }
+
+    public boolean cekKeranjang(String email, String idKoleksi) {
+        trKeranjang result = keranjangRepository.cekKeranjang(email, idKoleksi);
+
+        boolean isSuccess = true;
+        if (result == null) {
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
 }

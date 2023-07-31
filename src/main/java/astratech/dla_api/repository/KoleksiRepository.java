@@ -3,10 +3,12 @@ package astratech.dla_api.repository;
 import astratech.dla_api.model.mskoleksi;
 import astratech.dla_api.model.tratributkoleksi;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository("dla_mskoleksiRepository")
@@ -34,10 +36,10 @@ public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
             "ORDER BY COUNT(*) DESC;",nativeQuery = true)
     List<mskoleksi> getPopularBook();
 
-    @Query(value = "SELECT\n" +
-            "    (SELECT COUNT(*) FROM mskoleksi) AS jumlah_buku,\n" +
-            "    (SELECT COUNT(*) FROM trpengunjung WHERE DATEPART(DAY,creadate) = DATEPART(MONTH, GETDATE())) AS jumlah_pengunjung,\n" +
-            "    (SELECT COUNT(*) FROM trbooking WHERE MONTH(creadate) = MONTH(GETDATE())) AS jumlah_history;",nativeQuery = true)
+    @Query(value = "SELECT " +
+            "(SELECT COUNT(*) FROM mskoleksi) AS jumlah_buku," +
+            "(SELECT COUNT(*) FROM trpengunjung WHERE CONVERT(date, creadate) = CONVERT(date, GETDATE())) AS jumlah_pengunjung,\n" +
+            "(SELECT COUNT(*) FROM trbooking WHERE MONTH(creadate) = MONTH(GETDATE())) AS jumlah_history",nativeQuery = true)
     List<Object[]> getDataDashboard();
     @Query(value = "SELECT \n" +
             "    (SELECT COUNT(*) FROM trbooking WHERE email = ?1 AND status = 'Selesai') AS count_booking_selesai,\n" +
@@ -66,5 +68,10 @@ public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
             "where a.id_klasifikasi = b. id_klasifikasi and " +
             "a.id_koleksi = ?1",nativeQuery = true)
     List<Object[]> getKlasifikasiDetail(int id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE mskoleksi set statuspinjam =:status WHERE id_koleksi=:idKoleksi", nativeQuery = true)
+    void updateStatusPinjam(@Param("idKoleksi") String idKoleksi, @Param("status") int status);
 
 }

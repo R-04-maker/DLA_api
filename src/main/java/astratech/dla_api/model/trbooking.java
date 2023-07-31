@@ -6,7 +6,8 @@ import java.util.Date;
 @Entity
 public class trbooking {
     @Id
-    private String id_transaction;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_transaction;
     private String email;
     private int bookingonline;
     private String status;
@@ -14,11 +15,13 @@ public class trbooking {
     private String creadate;
     private String modiby;
     private String modidate;
+    private String gambar;
+    private String gambar_sesudah;
 
     public trbooking() {
     }
 
-    public trbooking(String id_transaction, String email, int bookingonline, String status, String creaby, String creadate, String modiby, String modidate) {
+    public trbooking(int id_transaction, String email, int bookingonline, String status, String creaby, String creadate, String modiby, String modidate, String gambar, String gambar_sesudah) {
         this.id_transaction = id_transaction;
         this.email = email;
         this.bookingonline = bookingonline;
@@ -27,13 +30,15 @@ public class trbooking {
         this.creadate = creadate;
         this.modiby = modiby;
         this.modidate = modidate;
+        this.gambar = gambar;
+        this.gambar_sesudah = gambar_sesudah;
     }
 
-    public String getId_transaction() {
+    public int getId_transaction() {
         return id_transaction;
     }
 
-    public void setId_transaction(String id_transaction) {
+    public void setId_transaction(int id_transaction) {
         this.id_transaction = id_transaction;
     }
 
@@ -91,5 +96,21 @@ public class trbooking {
 
     public void setModidate(String modidate) {
         this.modidate = modidate;
+    }
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
+    }
+
+    public String getGambar_sesudah() {
+        return gambar_sesudah;
+    }
+
+    public void setGambar_sesudah(String gambar_sesudah) {
+        this.gambar_sesudah = gambar_sesudah;
     }
 }

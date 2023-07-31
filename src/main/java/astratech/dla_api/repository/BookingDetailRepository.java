@@ -13,4 +13,7 @@ public interface BookingDetailRepository extends JpaRepository<trbookingdetail, 
 
     @Query("SELECT h FROM trbookingdetail h")
     public List<trbookingdetail> getBookdet();
+
+    @Query(value = "SELECT * FROM trbookingdetail WHERE id_transaction = ?1", nativeQuery = true)
+    List<trbookingdetail> getById_transaction(int id);
 }

@@ -2,6 +2,9 @@ package astratech.dla_api.service;
 
 import astratech.dla_api.model.trbooking;
 import astratech.dla_api.model.mskoleksi;
+import astratech.dla_api.model.trbookingdetail;
+import astratech.dla_api.repository.BookingDetailRepository;
+import astratech.dla_api.repository.KoleksiRepository;
 import astratech.dla_api.repository.TransaksiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +24,20 @@ public class TransaksiService {
     @Autowired
     TransaksiRepository transaksiRepository;
 
+    @Autowired
+    KoleksiRepository koleksiRepository;
+
+    @Autowired
+    BookingDetailRepository bookingDetailRepository;
+
     public List<trbooking> getBooking() {
         List<trbooking> booking = transaksiRepository.getidBooking();
         return booking;
     }
 
-    public boolean save(trbooking booking) {
-        transaksiRepository.save(booking);
-        return true;
+    public trbooking save(trbooking booking) {
+        trbooking data = transaksiRepository.save(booking);
+        return data;
     }
 
     public boolean delete(int id) {
@@ -87,11 +96,33 @@ public class TransaksiService {
             } else {
                 System.out.println("elseif");
                 transaksiRepository.updateBookingSelesai(idBooking,filename,filtered);
+                // update statuspinjam at mskoleksi from 0 to 1 (available to loan)
+                // get list koleksi from tbdetilbooking, loop, and update status koleksi
+                trbooking trbooking = getBookingByIdBooking(idBooking);
+                System.out.println("Id Booking : " + idBooking);
+                System.out.println("ID Transaksi from idbooking : "+trbooking.getId_transaction());
+                List<trbookingdetail> trbookingdetailList = getDetailBookingById(trbooking.getId_transaction());
+                for(trbookingdetail trbookingdetail : trbookingdetailList){
+                    System.out.println("ID Koleksi : " + trbookingdetail.getId_koleksi().getId_koleksi());
+                    koleksiRepository.updateStatusPinjam(trbookingdetail.getId_koleksi().getId_koleksi(), 1);
+                }
             }
             String statusNew = transaksiRepository.getStatusbyId(idBooking);
             return statusNew;
         }else {
             return null;
         }
+    }
+    public trbooking getBookingById(int idBooking){
+        trbooking data = transaksiRepository.getById(idBooking);
+        return data;
+    }
+    public trbooking getBookingByIdBooking(int idBooking){
+        trbooking data = transaksiRepository.getBookingByIdBooking(idBooking);
+        return data;
+    }
+    public List<trbookingdetail> getDetailBookingById(int idTransaksi){
+        List<trbookingdetail> data = bookingDetailRepository.getById_transaction(idTransaksi);
+        return data;
     }
 }

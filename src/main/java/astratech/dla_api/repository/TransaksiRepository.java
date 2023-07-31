@@ -1,6 +1,7 @@
 package astratech.dla_api.repository;
 
 import astratech.dla_api.model.trbooking;
+import astratech.dla_api.model.trbookingdetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -56,4 +57,7 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
     @Transactional
     @Query(value = "UPDATE trbooking SET gambar_sesudah =:filename, status =:status WHERE bookingonline =:idBooking",nativeQuery = true)
     void updateBookingSelesai(@Param("idBooking") int idBooking, @Param("filename") String fileName, @Param("status") String status);
+
+    @Query(value = "SELECT * FROM trbooking WHERE bookingonline = ?1", nativeQuery = true)
+    trbooking getBookingByIdBooking(int id);
 }
