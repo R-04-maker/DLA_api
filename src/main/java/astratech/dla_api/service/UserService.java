@@ -31,13 +31,22 @@ public class UserService {
         return dla_msmembe;
     }
 
+    public List<msuser> getUserByRole(String idRole) {
+        List<msuser> dla_msmembe = userRepository.getUserByRole(idRole);
+        return dla_msmembe;
+    }
+
 //untuk get semua data
     public List<msuser> getAllUser() {
         List<msuser> msusers = userRepository.getAllUser();
         return msusers;
     }
 
-
-
-
+    // update token in ms user
+    public void saveToken(String token, String email){
+        userRepository.updateToken(token, email);
+    }
+    public void deleteToken(String email){
+        userRepository.deleteToken(email);
+    }
 }

@@ -28,6 +28,4 @@ public class LoginController {
                 return new ResultLogin<>(404,"Data Not Found",null);
             }
     }
-
-
 }

@@ -30,11 +30,12 @@ public class msuser {
     private String creadate;
     private String modiby;
     private String modidate;
+    private String token;
 
     public msuser() {
     }
 
-    public msuser(String email, String nomor, String nama, String alamat, String hp, String password, msrole id_role, msprodi id_prodi, int status, String creaby, String creadate, String modiby, String modidate) {
+    public msuser(String email, String nomor, String nama, String alamat, String hp, String password, msrole id_role, msprodi id_prodi, int status, String creaby, String creadate, String modiby, String modidate, String token) {
         this.email = email;
         this.nomor = nomor;
         this.nama = nama;
@@ -48,6 +49,7 @@ public class msuser {
         this.creadate = creadate;
         this.modiby = modiby;
         this.modidate = modidate;
+        this.token = token;
     }
 
     public String getEmail() {
@@ -152,5 +154,13 @@ public class msuser {
 
     public void setModidate(String modidate) {
         this.modidate = modidate;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

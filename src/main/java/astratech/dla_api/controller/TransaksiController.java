@@ -1,14 +1,18 @@
 package astratech.dla_api.controller;
 
+import astratech.dla_api.model.msuser;
 import astratech.dla_api.model.trbooking;
 import astratech.dla_api.model.trbookingdetail;
 import astratech.dla_api.result.ResultObject;
 import astratech.dla_api.result.ResultString;
 import astratech.dla_api.result.ResultTransaksiBooking;
 import astratech.dla_api.result.result;
+import astratech.dla_api.service.FcmNotificationService;
 import astratech.dla_api.service.TransaksiService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import astratech.dla_api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -40,6 +44,18 @@ public class TransaksiController {
     TransaksiService transaksiService;
     @Autowired
     ResourceLoader resourceLoader;
+    @Autowired
+    UserService userService;
+
+//    private final FcmNotificationService fcmNotificationService;
+
+    @Autowired
+    FcmNotificationService fcmNotificationService;
+/*
+    public TransaksiController(FcmNotificationService fcmNotificationService) {
+        this.fcmNotificationService = fcmNotificationService;
+    }
+*/
 
     @Value("src/main/resources/static/img/foto_peminjaman/")
     private String uploadDir;
@@ -75,6 +91,13 @@ public class TransaksiController {
         trbooking savedBooking = transaksiService.save(booking1);
         int idTransaction = savedBooking.getId_transaction();
         System.out.println(idTransaction);
+
+        // Get token by Role with Role ROL01
+        List<msuser> data = userService.getUserByRole("ROL01");
+        for(msuser admin : data){
+            fcmNotificationService.sendNotification(admin.getToken(), "Peminjaman Baru",   "Id Booking : " + booking.getBookingonline());
+        }
+
         if (idTransaction > 0){
             return new result(idTransaction, "Success");
         }else{
