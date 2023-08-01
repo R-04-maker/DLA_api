@@ -13,8 +13,8 @@ import java.util.List;
 
 @Repository("dla_mskoleksiRepository")
 public interface KoleksiRepository extends JpaRepository<mskoleksi, Integer> {
-/*    @Query(value = "select a.*, b.deskripsi as pengarang from mskoleksi as a, tratributkoleksi as b, msatribut as c where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1", nativeQuery = true)
-    List<mskoleksi> findAllByBrg_status();    */
+    /*    @Query(value = "select a.*, b.deskripsi as pengarang from mskoleksi as a, tratributkoleksi as b, msatribut as c where a.id_koleksi = b.id_koleksi and b.id_atribut = c.id_atribut and c.id_atribut = 'IT001' and a.status = 1", nativeQuery = true)
+        List<mskoleksi> findAllByBrg_status();    */
     @Query(value = "select * from mskoleksi where status = 1", nativeQuery = true)
     List<mskoleksi> findAllByBrg_status();
 

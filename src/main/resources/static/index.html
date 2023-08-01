@@ -64,11 +64,7 @@
                                 <div class="mb-3">
                                     <label for="prodi" >Prodi</label>
                                     <select id="prodi" name="prodi" class="form-control" >
-                                        <option>MI</option>
-                                        <option>MK</option>
-                                        <option>MO</option>
-                                        <option>TKBG</option>
-                                        <option>Karyawan Astra</option>
+                                        <option value="" disabled selected>-- Pilih Prodi --</option>
                                     </select>
                                 </div>
                             <div class="text-center d-grid">
@@ -118,7 +114,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
 <script type="text/javascript">
+    urlorganisasi= "http://localhost:8080/getAllProdi";
     $(function validate() {
         swal({
             icon: 'success',
@@ -126,6 +124,18 @@
             text: 'Berhasil Saved !'
         });
     });
+
+    $.getJSON(urlorganisasi,
+        function (json1) {
+            var data = json1;
+            data.forEach(item => {
+                var option = document.createElement("option");
+                option.value = item.id_prodi;
+                option.text = item.deskripsi;
+                prodi.appendChild(option);
+            })
+        }
+    );
 </script>
 
 <!--<script th:if="${param.success != null and param.success[0] == 'true'}">-->

@@ -20,14 +20,29 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
     List<Object[]> getUnconfirmedBooking();
     @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Diterima' AND a.email = b.email", nativeQuery = true)
     List<Object[]> getConfirmedBooking();
-    @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Dipinjam' AND a.email = b.email", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT a.*,c.nama,c.nomor, b.tanggalpinjam, b.tanggalkembali\n" +
+            "FROM trbooking AS a\n" +
+            "join msuser as c on c.email = a.email\n" +
+            "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
+            "where a.status ='Dipinjam'", nativeQuery = true)
     List<Object[]> getBorrowedBooking();
-    @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Selesai' AND a.email = b.email", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT a.*,c.nama,c.nomor, b.tanggalpinjam, b.tanggalkembali\n" +
+                      "FROM trbooking AS a\n" +
+                      "join msuser as c on c.email = a.email\n" +
+                    "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
+                        "where a.status ='Selesai'", nativeQuery = true)
     List<Object[]> getFinishedBooking();
     @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.email = b.email", nativeQuery = true)
     List<Object[]> getAllBooking();
 
-    @Query(value = "select TOP 1 a.id_transaction, a.bookingonline, a.status, b.tanggalpinjam, b.tanggalkembali, c.nomor, c.nama, c.id_prodi, d.deskripsi, c.hp, a.gambar, a.gambar_sesudah" +
+    @Query(value ="SELECT DISTINCT a.*,c.nama,c.nomor, b.tanggalpinjam, b.tanggalkembali\n" +
+            "FROM trbooking AS a\n" +
+            "join msuser as c on c.email = a.email\n" +
+            "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
+            "where a.email =?1", nativeQuery = true)
+    List<Object[]> getHistoryMember(String email);
+
+    @Query(value = "select TOP 1 a.id_transaction, a.bookingonline, a.status,b.tanggalpinjam, b.tanggalkembali,a.creadate ,c.nomor, c.nama, c.id_prodi, d.deskripsi, c.hp, a.gambar, a.gambar_sesudah" +
             " from trbooking as a, trbookingdetail as b, msuser as c, msprodi as d where a.id_transaction = b.id_transaction and a.email = c.email " +
             "and c.id_prodi = d.id_prodi and a.bookingonline = ?1", nativeQuery = true)
     List<Object[]> getDetailBooking(int idBooking);
