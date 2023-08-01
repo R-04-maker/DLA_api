@@ -120,6 +120,16 @@ public class TransaksiController {
         }
     }
 
+    @GetMapping("/getHistoryMember/{email}")
+    public Object getHistoryMember(HttpServletResponse response,@PathVariable String email){
+        List<Object[]> booking = transaksiService.getHistoryMember(email);
+        if(booking != null){
+            return new ResultObject(200, "Success", booking);
+        }else {
+            return new ResultTransaksiBooking(500,"Failed",null);
+        }
+    }
+
     @GetMapping("/getAllBooking")
     public Object getAllBooking(HttpServletResponse response){
         List<Object[]> booking = transaksiService.getAllBooking();
@@ -145,19 +155,22 @@ public class TransaksiController {
             }
             Object[] a = data.get(0);
             System.out.println(a[10].toString());
-            if(!a[10].toString().equals(null)){
-                String imagePath = baseUrl + "/img/foto_peminjaman/" + a[10].toString();
-                a[10] = imagePath;
-            }
             if(!a[11].toString().equals(null)){
                 String imagePath = baseUrl + "/img/foto_peminjaman/" + a[11].toString();
                 a[11] = imagePath;
+            }
+            if(!a[12].toString().equals(null)){
+                String imagePath = baseUrl + "/img/foto_peminjaman/" + a[12].toString();
+                a[12] = imagePath;
             }
             return new ResultObject(200,"Success",data, listdata);
         }else {
             return new ResultObject(500,"Failed",null, null);
         }
     }
+
+
+
     @GetMapping("/updatePengajuan/{id}/{status}")
     public Object updatePengajuan(@PathVariable int id, @PathVariable String status){
         String data = transaksiService.updatePengajuan(id,status);

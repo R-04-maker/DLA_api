@@ -71,6 +71,11 @@ public class TransaksiService {
         return booking;
     }
 
+    public List<Object[]> getHistoryMember(String email) {
+        List<Object[]> booking = transaksiRepository.getHistoryMember(email);
+        return booking;
+    }
+
     public List<Object[]> getBukuDetailBooking(int idBooking) {
         List<Object[]> booking = transaksiRepository.getBukuDetailBooking(idBooking);
         return booking;

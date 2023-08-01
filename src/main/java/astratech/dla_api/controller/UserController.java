@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping("/saveUsers")
     public result save(HttpServletResponse response, @RequestBody msuser mhsParam) {
 
-        msuser user = new msuser(mhsParam.getEmail(), mhsParam.getNomor(), mhsParam.getNama(), mhsParam.getAlamat(), mhsParam.getHp(), mhsParam.getPassword(), mhsParam.getId_role(), mhsParam.getId_prodi(), mhsParam.getStatus(), mhsParam.getCreaby(), mhsParam.getCreadate(), mhsParam.getModiby(),mhsParam.getModidate());
+        msuser user = new msuser(mhsParam.getEmail(), mhsParam.getNomor(), mhsParam.getNama(), mhsParam.getAlamat(), mhsParam.getHp(), mhsParam.getPassword(), mhsParam.getId_role(), mhsParam.getId_prodi(), mhsParam.getStatus(), mhsParam.getCreaby(), mhsParam.getCreadate(), mhsParam.getModiby(),mhsParam.getModidate(),"0");
         boolean isSuccess = userService.save(user);
 
         if (isSuccess){
