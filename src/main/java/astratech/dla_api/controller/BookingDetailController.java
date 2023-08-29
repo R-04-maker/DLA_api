@@ -57,11 +57,11 @@ public class BookingDetailController {
         // Update statuspinjam koleksi
         bookingdetService.updateStatusPinjam(bookdet.getId_koleksi().getId_koleksi(), 0);
         boolean isSuccess = bookingdetService.save(bookdet1);
+
         // get email by id_transaction
         trbooking data = transaksiService.getBookingById(bookdet.getId_transaction().getId_transaction());
         bookingdetService.deleteKeranjang(data.getEmail(), bookdet.getId_koleksi().getId_koleksi());
-        System.out.println("Email : " + data.getEmail());
-        System.out.println("Id Koleksi : " + bookdet.getId_koleksi().getId_koleksi());
+
         if (isSuccess){
             return new result(200, "Success");
         }else{

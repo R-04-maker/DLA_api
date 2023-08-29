@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -21,6 +22,9 @@ public interface UserRepository extends JpaRepository<msuser, Integer> {
 
     @Query(value = "SELECT * FROM msuser WHERE id_role =:idRole", nativeQuery = true)
     List<msuser> getUserByRole(@Param("idRole") String idRole);
+
+    @Query(value = "SELECT * FROM msuser WHERE email =?1", nativeQuery = true)
+    msuser getEmailvalidate(String email);
 
     @Transactional
     @Modifying

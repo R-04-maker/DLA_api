@@ -25,6 +25,15 @@ public class UserService {
         return isSuccess;
     }
 
+    public boolean getEmailvalidate(String email){
+        msuser dla=userRepository.getEmailvalidate(email);
+        boolean isSuccess = false;
+        if (dla == null) {
+            isSuccess = true;
+        }
+        return isSuccess;
+    }
+
 
     public msuser getMahasiswaUser(String nama) {
         msuser dla_msmembe = userRepository.getmahasiswaUser(nama);
@@ -48,5 +57,8 @@ public class UserService {
     }
     public void deleteToken(String email){
         userRepository.deleteToken(email);
+    }
+    public msuser getUserByEmail(String email){
+        return userRepository.getEmailvalidate(email);
     }
 }

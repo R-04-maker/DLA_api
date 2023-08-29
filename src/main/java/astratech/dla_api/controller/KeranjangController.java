@@ -64,8 +64,9 @@ public class KeranjangController {
                 }
             }
             return new ResultKeranjang("Success",200, keranjang);
+        }else{
+            return new ResultKeranjang("Failed",500, null);
         }
-         return keranjang;
     }
 
     @GetMapping("/cekKeranjang/{email}/{idKoleksi}")

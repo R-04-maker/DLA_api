@@ -19,7 +19,7 @@ public class trpengunjung {
     private String modiby;
     private Date modidate;
 
-    public trpengunjung(String nim, String nama, String prodi) {
+    public trpengunjung(int id_pengunjung, String nim, String nama, String prodi, String creaby, Date creadate, String modiby, Date modidate) {
         this.id_pengunjung = id_pengunjung;
         this.nim = nim;
         this.nama = nama;

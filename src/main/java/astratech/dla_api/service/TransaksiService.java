@@ -76,6 +76,11 @@ public class TransaksiService {
         return booking;
     }
 
+    public List<Object[]> getValidasiAddKeranjang(String email) {
+        List<Object[]> booking = transaksiRepository.getValidasiAddKeranjang(email);
+        return booking;
+    }
+
     public List<Object[]> getBukuDetailBooking(int idBooking) {
         List<Object[]> booking = transaksiRepository.getBukuDetailBooking(idBooking);
         return booking;
@@ -84,6 +89,16 @@ public class TransaksiService {
         String data = transaksiRepository.getStatusbyId(idBooking);
         if(data != null){
             transaksiRepository.updatePengajuan(status,idBooking);
+            // ketika tolak atau batal, maka akan melakukan update status pinjam koleksi
+            if(status.equals("Ditolak") || status.equals("Batal")){
+                trbooking trbookings = transaksiRepository.getByIdBooking(idBooking);
+                // get koleksi
+                List<trbookingdetail> trbookingdetailList = getDetailBookingById(trbookings.getId_transaction());
+                for(trbookingdetail trbookingdetail : trbookingdetailList){
+                    System.out.println("ID Koleksi : " + trbookingdetail.getId_koleksi().getId_koleksi());
+                    koleksiRepository.updateStatusPinjam(trbookingdetail.getId_koleksi().getId_koleksi(), 1);
+                }
+            }
             String statusNew = transaksiRepository.getStatusbyId(idBooking);
             return statusNew;
         }else {
@@ -104,8 +119,7 @@ public class TransaksiService {
                 // update statuspinjam at mskoleksi from 0 to 1 (available to loan)
                 // get list koleksi from tbdetilbooking, loop, and update status koleksi
                 trbooking trbooking = getBookingByIdBooking(idBooking);
-                System.out.println("Id Booking : " + idBooking);
-                System.out.println("ID Transaksi from idbooking : "+trbooking.getId_transaction());
+
                 List<trbookingdetail> trbookingdetailList = getDetailBookingById(trbooking.getId_transaction());
                 for(trbookingdetail trbookingdetail : trbookingdetailList){
                     System.out.println("ID Koleksi : " + trbookingdetail.getId_koleksi().getId_koleksi());
@@ -125,6 +139,9 @@ public class TransaksiService {
     public trbooking getBookingByIdBooking(int idBooking){
         trbooking data = transaksiRepository.getBookingByIdBooking(idBooking);
         return data;
+    }
+    public trbooking getByIdBooking(int bookingOnline){
+        return transaksiRepository.getByIdBooking(bookingOnline);
     }
     public List<trbookingdetail> getDetailBookingById(int idTransaksi){
         List<trbookingdetail> data = bookingDetailRepository.getById_transaction(idTransaksi);

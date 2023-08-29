@@ -16,9 +16,23 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
     @Query(value = "SELECT TOP 1 * FROM trbooking ORDER BY id_transaction DESC ",nativeQuery = true)
     public List<trbooking> getidBooking();
 
-    @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Pengajuan' AND a.email = b.email", nativeQuery = true)
+    @Query(value = "SELECT * FROM trbooking WHERE bookingonline = ?1 ",nativeQuery = true)
+    public trbooking getByIdBooking(int id);
+
+    @Query(value = "SELECT * FROM trbookingdetail WHERE id_transaction = ?1 ",nativeQuery = true)
+    public List<trbookingdetail> getTrDetailByIdTrans(int id);
+
+    @Query(value = "SELECT DISTINCT a.*,c.nama,c.nomor, b.tanggalpinjam, b.tanggalkembali\n" +
+            "FROM trbooking AS a\n" +
+            "join msuser as c on c.email = a.email\n" +
+            "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
+            "where a.status ='Pengajuan'", nativeQuery = true)
     List<Object[]> getUnconfirmedBooking();
-    @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.status = 'Diterima' AND a.email = b.email", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT a.*,c.nama,c.nomor, b.tanggalpinjam, b.tanggalkembali\n" +
+            "FROM trbooking AS a\n" +
+            "join msuser as c on c.email = a.email\n" +
+            "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
+            "where a.status ='Diterima'", nativeQuery = true)
     List<Object[]> getConfirmedBooking();
     @Query(value = "SELECT DISTINCT a.*,c.nama,c.nomor, b.tanggalpinjam, b.tanggalkembali\n" +
             "FROM trbooking AS a\n" +
@@ -30,7 +44,7 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
                       "FROM trbooking AS a\n" +
                       "join msuser as c on c.email = a.email\n" +
                     "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
-                        "where a.status ='Selesai'", nativeQuery = true)
+                        "where a.status ='Selesai' or a.status ='Ditolak'", nativeQuery = true)
     List<Object[]> getFinishedBooking();
     @Query(value = "select a.*,b.nama,b.nomor from trbooking as a, msuser as b where a.email = b.email", nativeQuery = true)
     List<Object[]> getAllBooking();
@@ -41,6 +55,20 @@ public interface TransaksiRepository extends JpaRepository<trbooking, Integer> {
             "JOIN trbookingdetail AS b ON a.id_transaction = b.id_transaction \n" +
             "where a.email =?1", nativeQuery = true)
     List<Object[]> getHistoryMember(String email);
+
+    @Query(value ="SELECT \n" +
+            "    CASE\n" +
+            "        WHEN (\n" +
+            "            (SELECT COUNT(*) FROM trbooking WHERE email =?1 AND status IN ('Dipinjam', 'Pengajuan')) <= 1\n" +
+            "        )\n" +
+            "        THEN 'true'\n" +
+            "        ELSE 'false'\n" +
+            "    END AS result,\n" +
+            "    CAST(\n" +
+            "        (SELECT COUNT(*) FROM trbooking WHERE email =?1 AND status IN ('Dipinjam', 'Pengajuan'))\n" +
+            "        AS NVARCHAR(MAX)\n" +
+            "    ) AS jumlah_buku_dipinjam;", nativeQuery = true)
+    List<Object[]> getValidasiAddKeranjang(String email);
 
     @Query(value = "select TOP 1 a.id_transaction, a.bookingonline, a.status,b.tanggalpinjam, b.tanggalkembali,a.creadate ,c.nomor, c.nama, c.id_prodi, d.deskripsi, c.hp, a.gambar, a.gambar_sesudah" +
             " from trbooking as a, trbookingdetail as b, msuser as c, msprodi as d where a.id_transaction = b.id_transaction and a.email = c.email " +

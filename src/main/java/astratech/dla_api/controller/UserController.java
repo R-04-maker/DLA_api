@@ -25,16 +25,22 @@ public class UserController {
     //save user
     @PostMapping("/saveUsers")
     public result save(HttpServletResponse response, @RequestBody msuser mhsParam) {
+        boolean emailvalidate=userService.getEmailvalidate(mhsParam.getEmail());
 
-        msuser user = new msuser(mhsParam.getEmail(), mhsParam.getNomor(), mhsParam.getNama(), mhsParam.getAlamat(), mhsParam.getHp(), mhsParam.getPassword(), mhsParam.getId_role(), mhsParam.getId_prodi(), mhsParam.getStatus(), mhsParam.getCreaby(), mhsParam.getCreadate(), mhsParam.getModiby(),mhsParam.getModidate(),null);
-        boolean isSuccess = userService.save(user);
-
-        if (isSuccess){
-            return new result(200, "Success");
-        }else{
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new result(500, "Fail");
+        if (emailvalidate){
+            msuser user = new msuser(mhsParam.getEmail(), mhsParam.getNomor(), mhsParam.getNama(), mhsParam.getAlamat(), mhsParam.getHp(), mhsParam.getPassword(), mhsParam.getId_role(), mhsParam.getId_prodi(), mhsParam.getStatus(), mhsParam.getCreaby(), mhsParam.getCreadate(), mhsParam.getModiby(),mhsParam.getModidate(),null);
+            boolean isSuccess = userService.save(user);
+            if (isSuccess){
+                return new result(200, "Success");
+            }else{
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                return new result(500, "Fail");
+            }
+        }else {
+            return new result(505,"email Sudah ada");
         }
+
+
     }
 
     @GetMapping("/getUser")

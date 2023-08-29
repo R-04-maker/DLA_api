@@ -46,16 +46,8 @@ public class TransaksiController {
     ResourceLoader resourceLoader;
     @Autowired
     UserService userService;
-
-//    private final FcmNotificationService fcmNotificationService;
-
     @Autowired
     FcmNotificationService fcmNotificationService;
-/*
-    public TransaksiController(FcmNotificationService fcmNotificationService) {
-        this.fcmNotificationService = fcmNotificationService;
-    }
-*/
 
     @Value("src/main/resources/static/img/foto_peminjaman/")
     private String uploadDir;
@@ -66,7 +58,8 @@ public class TransaksiController {
         return booking;
     }
 
-    //deletebooking
+
+
     @DeleteMapping("/deleteBooking/{id}")
     public result delete(HttpServletResponse response, @PathVariable int id) {
         boolean isSuccess = transaksiService.delete(id);
@@ -94,6 +87,7 @@ public class TransaksiController {
 
         // Get token by Role with Role ROL01
         List<msuser> data = userService.getUserByRole("ROL01");
+
         for(msuser admin : data){
             fcmNotificationService.sendNotification(admin.getToken(), "Peminjaman Baru",   "Id Booking : " + booking.getBookingonline());
         }
@@ -115,6 +109,7 @@ public class TransaksiController {
             return new ResultTransaksiBooking(500,"Failed",null);
         }
     }
+
     @GetMapping("/getConfirmedBooking")
     public Object getConfirmedBooking(HttpServletResponse response){
         List<Object[]> booking = transaksiService.getConfirmedBooking();
@@ -124,6 +119,7 @@ public class TransaksiController {
             return new ResultTransaksiBooking(500,"Failed",null);
         }
     }
+
     @GetMapping("/getBorrowedBooking")
     public Object getBorrowedBooking(HttpServletResponse response){
         List<Object[]> booking = transaksiService.getBorrowedBooking();
@@ -133,6 +129,7 @@ public class TransaksiController {
             return new ResultTransaksiBooking(500,"Failed",null);
         }
     }
+
     @GetMapping("/getFinishedBooking")
     public Object getFinishedBooking(HttpServletResponse response){
         List<Object[]> booking = transaksiService.getFinishedBooking();
@@ -143,7 +140,7 @@ public class TransaksiController {
         }
     }
 
-    @GetMapping("/getHistoryMember/{email}")
+        @GetMapping("/getHistoryMember/{email}")
     public Object getHistoryMember(HttpServletResponse response,@PathVariable String email){
         List<Object[]> booking = transaksiService.getHistoryMember(email);
         if(booking != null){
@@ -152,6 +149,17 @@ public class TransaksiController {
             return new ResultTransaksiBooking(500,"Failed",null);
         }
     }
+
+    @GetMapping("/getValidasiAddKeranjang/{email}")
+    public Object getValidasiAddKeranjang(HttpServletResponse response,@PathVariable String email){
+        List<Object[]> booking = transaksiService.getValidasiAddKeranjang(email);
+        if(booking != null){
+            return new ResultObject(200, "Success", booking);
+        }else {
+            return new ResultTransaksiBooking(500,"Failed",null);
+        }
+    }
+
 
     @GetMapping("/getAllBooking")
     public Object getAllBooking(HttpServletResponse response){
@@ -178,11 +186,11 @@ public class TransaksiController {
             }
             Object[] a = data.get(0);
             System.out.println(a[10].toString());
-            if(!a[11].toString().equals(null)){
+            if(!a[11].toString().equals("")){
                 String imagePath = baseUrl + "/img/foto_peminjaman/" + a[11].toString();
                 a[11] = imagePath;
             }
-            if(!a[12].toString().equals(null)){
+            if(!a[12].toString().equals("")){
                 String imagePath = baseUrl + "/img/foto_peminjaman/" + a[12].toString();
                 a[12] = imagePath;
             }
@@ -192,12 +200,20 @@ public class TransaksiController {
         }
     }
 
-
-
     @GetMapping("/updatePengajuan/{id}/{status}")
     public Object updatePengajuan(@PathVariable int id, @PathVariable String status){
         String data = transaksiService.updatePengajuan(id,status);
         if (data != null ) {
+            // Send Feedback Notif to Member
+            // get Token
+            trbooking dataBooking = transaksiService.getByIdBooking(id);
+            msuser member = userService.getUserByEmail(dataBooking.getEmail());
+            // send notif with message status if status = Ditolak
+            if(status.equals("Ditolak")){
+                fcmNotificationService.sendNotification(member.getToken(), "Feedback Pengajuan Peminjaman",   "Peminjaman dengan Id Booking : " + id + " " + status);
+            }else {
+                fcmNotificationService.sendNotification(member.getToken(), "Feedback Pengajuan Peminjaman",   "Peminjaman dengan Id Booking : " + id + " " + status);
+            }
             return new ResultString(200,"Success",data);
         }else {
             return new ResultString(500,"Failed",null);

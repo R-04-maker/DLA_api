@@ -22,5 +22,4 @@ public interface KeranjangRepository extends JpaRepository<trKeranjang, Integer>
     @Transactional
     @Query(value = "DELETE FROM trKeranjangPeminjaman where email=?1 and id_koleksi=?2",nativeQuery = true)
     void deleteKeranjang(String email, String idKoleksi);
-
 }

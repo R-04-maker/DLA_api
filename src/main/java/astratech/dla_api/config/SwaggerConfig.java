@@ -24,8 +24,8 @@ public class SwaggerConfig {
 
     private ApiInfo metaInfo(){
         ApiInfo apiInfo = new ApiInfo(
-                "Spring Boot Swagger DLA ",
-                "Api Untuk DLA",
+                "DLA API Documentation Project",
+                "Api untuk Digital Library Astratech",
                 "1.0",
                 "Terms of Service",
                 "Kelompok 4",

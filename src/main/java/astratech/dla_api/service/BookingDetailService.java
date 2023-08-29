@@ -33,6 +33,7 @@ public class BookingDetailService {
         return true;
     }
 
+    // Update Status Pinjam Koleksi
     public boolean updateStatusPinjam(String idKoleksi, int status) {
         mKoleksiRepository.updateStatusPinjam(idKoleksi,status);
         return true;

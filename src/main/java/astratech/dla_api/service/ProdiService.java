@@ -1,6 +1,5 @@
 package astratech.dla_api.service;
 
-import astratech.dla_api.model.msuser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import astratech.dla_api.repository.*;
@@ -9,14 +8,12 @@ import astratech.dla_api.model.*;
 import java.util.List;
 
 @Service
-public class msprodiService {
+public class ProdiService {
     @Autowired
-    msprodiRepository repository;
+    ProdiRepository repository;
 
     public List<msprodi> getAll() {
-        List<msprodi> prod = repository.findAll();
+        List<msprodi> prod = repository.getbyStatus();
         return prod;
     }
-
-
 }

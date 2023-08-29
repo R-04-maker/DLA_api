@@ -43,7 +43,7 @@ public class NotificationController {
     public ResponseEntity<String> sendNotification(@RequestParam("token") String token) {
         try {
             // The sendNotification function code
-            String fcmServerKey = "AAAAcZhYIVU:APA91bFihTdU1QFQH4shxnr13IHNR2Ue5VVhW85VQCkIZgBeYcMjkUcEYUOByTYP4p1COM3UipwA7YcScJt_VPYmz98PmmOsz5VXGJeyzy1w4hgF8emnq5Pepa-9g4MRX2Z6kg1qVng-";
+            String fcmServerKey = "AAAA9yYRluo:APA91bFuMa8qPlEiGhti4Osh-1X-KtWUUV0EID-umy5jyWIuqBYoVkUPkAOD9e1rExRVrDYxVDMlePWDr0j7MSxPvtIcZT94BIdgBPwcwiX-6xto2jKJxe5lHFXDZI_3G27hnuxsvNKH";
             String fcmEndpoint = "https://fcm.googleapis.com/fcm/send";
             String title = "OKE";
             String value = "aa";

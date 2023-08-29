@@ -7,29 +7,33 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("/pengunjung")
 public class PengunjungController {
-
 
     @Autowired
     PengunjungService pengunjungService;
 
     @PostMapping("/savePengunjung")
-    public ResponseEntity<Void> save(HttpServletResponse response, @RequestParam String nim, String nama, String prodi){
-         trpengunjung pengunjung = new trpengunjung(nim,nama,prodi);
-         pengunjungService.save(pengunjung);
+    public ResponseEntity<String> save(@RequestParam String nim, String nama, String prodi) {
+        Date date = new Date();
+        trpengunjung pengunjung = new trpengunjung(0,nim, nama, prodi,nim,date,nim,date);
+        pengunjungService.save(pengunjung);
 
-         return ResponseEntity.status(HttpStatus.FOUND).
-                 location(URI.create("http://localhost:8080/")).build();
-//
+        return ResponseEntity.ok("Data berhasil disimpan"); // Mengembalikan pesan sukses
+    }
+
+    @GetMapping("/Absensi")
+    public ResponseEntity<Void> pageAbsensi(){
+        return ResponseEntity.status(HttpStatus.FOUND).
+                location(URI.create("http://localhost:8080/index.html")).build();
     }
 
     //get semua user

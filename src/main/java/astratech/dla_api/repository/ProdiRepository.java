@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface msprodiRepository extends JpaRepository<msprodi,Integer> {
+public interface ProdiRepository extends JpaRepository<msprodi,Integer> {
 
-
+    @Query(value = "SELECT * FROM msprodi WHERE status = 1",nativeQuery = true)
+    List<msprodi> getbyStatus();
 }

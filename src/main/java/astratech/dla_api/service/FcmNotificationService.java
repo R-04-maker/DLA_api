@@ -30,6 +30,7 @@ public class FcmNotificationService {
             ResponseEntity<String> responseEntity = restTemplate.exchange(fcmEndpoint, HttpMethod.POST, requestEntity, String.class);
 
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                System.out.println("Notifikasi : Notifikasi berhasil dikirim ke " + token + ";" + title + ";" + value);
                 return ResponseEntity.ok("Notification sent successfully.");
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send notification.");
